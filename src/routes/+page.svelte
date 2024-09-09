@@ -54,7 +54,6 @@
         authUrlCallback();
         failedOpenBrowserCallback();
 
-        console.log("Destroying overlay page...");
         if (updateInterval !== null) {
             clearInterval(updateInterval);
             await toggleOverlay();
@@ -91,7 +90,6 @@
         }
 
         updateInterval = setInterval(async () => {
-            console.log("Checking for voice channel...");
             voiceChannel = await requestVoiceChannel();
             await toggleOverlay();
         }, 2500);

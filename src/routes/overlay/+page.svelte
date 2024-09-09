@@ -31,7 +31,6 @@
         settings = await loadSettings();
         settingsListenerCallback = await listenForSettings((newSettings) => {
             settings = newSettings;
-            console.log("Settings updated", settings);
         });
 
         voiceListenerCallback = await listenForVoiceChannel(async (channel) => {

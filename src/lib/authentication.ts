@@ -20,7 +20,6 @@ export async function listenForAuth(
     callback: (authState: boolean) => void
 ): Promise<() => void> {
     return listen("authenticated", () => {
-        console.log("Authenticated");
         callback(true);
     });
 }

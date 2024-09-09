@@ -45,7 +45,6 @@ export async function listenForVoiceChannel(
 export async function subscribeSpeakingState(
     channelId: string
 ): Promise<() => void> {
-    console.log("Subscribing to speaking state for channel", channelId);
     await invoke("subscribe_speaking_state", { channelId });
 
     return () => {
