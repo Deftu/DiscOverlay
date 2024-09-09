@@ -1,0 +1,83 @@
+{
+    "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+    "build": {
+        "beforeBuildCommand": "npm run build",
+        "beforeDevCommand": "npm run dev",
+        "devPath": "http://localhost:5173",
+        "distDir": "../build"
+    },
+    "package": {
+        "productName": "discoverlay",
+        "version": "0.1.0"
+    },
+    "tauri": {
+        "allowlist": {
+            "all": false,
+            "window": {
+                "all": false,
+                "close": true,
+                "hide": true,
+                "show": true,
+                "minimize": true,
+                "unminimize": true,
+                "startDragging": true,
+                "setIgnoreCursorEvents": true
+            },
+            "shell": {
+                "all": false,
+                "open": true
+            }
+        },
+        "bundle": {
+            "active": true,
+            "category": "Utility",
+            "copyright": "Deftu 2024",
+            "deb": {
+                "depends": []
+            },
+            "externalBin": [],
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "identifier": "dev.deftu.discoverlay",
+            "longDescription": "",
+            "macOS": {
+                "entitlements": null,
+                "exceptionDomain": "",
+                "frameworks": [],
+                "providerShortName": null,
+                "signingIdentity": null
+            },
+            "resources": [],
+            "shortDescription": "",
+            "targets": "all",
+            "windows": {
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "security": {
+            "csp": null
+        },
+        "updater": {
+            "active": false
+        },
+        "windows": [
+            {
+                "minWidth": 1280,
+                "minHeight": 720,
+                "center": true,
+                "fullscreen": false,
+                "resizable": false,
+                "title": "DiscOverlay",
+                "decorations": false,
+                "transparent": true
+            }
+        ]
+    }
+}
