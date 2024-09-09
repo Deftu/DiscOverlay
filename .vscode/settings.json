@@ -1,6 +1,3 @@
 {
-    "rust-analyzer.linkedProjects": [
-        "src-tauri/Cargo.toml",
-        "src-tauri/discord-ipc-rust/Cargo.toml"
-    ]
+    "rust-analyzer.linkedProjects": ["src-tauri/Cargo.toml"]
 }

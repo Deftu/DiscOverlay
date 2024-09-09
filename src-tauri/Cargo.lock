@@ -3091,6 +3091,7 @@ dependencies = [
 [[package]]
 name = "rpc-discord"
 version = "0.0.1-alpha.5"
+source = "git+https://github.com/Deftu/discord-ipc-rust.git#c687d70abf5f8d48933a28fd6bb678c9ca8b55d6"
 dependencies = [
  "dotenv",
  "serde",

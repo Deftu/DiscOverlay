@@ -21,7 +21,7 @@ serde_json = { version = "1.0", features = ["preserve_order"] }
 tauri = { version = "1.7.2", features = [ "window-set-ignore-cursor-events", "shell-open", "window-start-dragging", "window-close", "window-show", "window-minimize", "window-hide", "window-unminimize", "devtools"] }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 
-rpc-discord = { path = "./discord-ipc-rust" }
+rpc-discord = { git = "https://github.com/Deftu/discord-ipc-rust.git" }
 oauth2 = "4.4.2"
 webbrowser = "1.0.1"
 axum = "0.7.5"
