@@ -15,19 +15,19 @@
 
 DiscOverlay uses Discord's RPC API to interact with your client for all of the information it needs to display. Unfortunately, as of now, Discord does not allow for global applications to use the RPC API, so you will need to create a new personal application on the Discord Developer Portal.
 
-![New Application screenshot](./github/new_application.png)
+![New Application screenshot](./.github/new_application.png)
 
 ### Getting your client ID
 
 Discord uses this for determining which application to interact with. You can find this on the general information page of your application.
 
-![Client ID screenshot](./github/copy_client_id.png)
+![Client ID screenshot](./.github/copy_client_id.png)
 
 ### Setting your redirect URI
 
 The app redirects you to this URI after you authorize it. You can set this in the OAuth2 tab of your application.
 
-![Redirect URI screenshot](./github/redirect_url.png)
+![Redirect URI screenshot](./.github/redirect_url.png)
 
 ---
 
