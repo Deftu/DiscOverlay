@@ -172,6 +172,9 @@
 <style lang="scss">
     :global(html, body, .svelte-body, main) {
         background: transparent !important;
+        pointer-events: none;
+        cursor: default;
+        user-select: none;
     }
 
     .overlay-container {
