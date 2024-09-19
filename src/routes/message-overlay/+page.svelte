@@ -1,14 +1,14 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import "../../styles.css";
 
     import { obtainOwnId } from "$lib/utils";
     import { type Settings, loadSettings, listenForSettings } from "$lib/settings";
-    import { type VoiceChannelData, type VoiceChannelUser, type VoiceUserState, listenForVoiceChannel, subscribeSpeakingState, listenForSpeakingStart, listenForSpeakingStop, listenForVoiceStateUpdate } from "$lib/voice";
-    import { appWindow } from "@tauri-apps/api/window";
-    import { convertFileSrc } from "@tauri-apps/api/tauri";
+    import { type VoiceChannelData, type VoiceChannelUser, type VoiceUserState, requestVoiceChannel, listenForVoiceChannel, subscribeSpeakingState, listenForSpeakingStart, listenForSpeakingStop, listenForVoiceStateUpdate, listenForVoiceStateCreate, listenForVoiceStateDelete } from "$lib/voice";
+    import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+    import { convertFileSrc } from "@tauri-apps/api/core";
     import { onDestroy, onMount } from "svelte";
+const appWindow = getCurrentWebviewWindow()
 
-    let customCssLink: string | null = $state(null);
     let ownId: string | null = $state(null);
     let settings: Settings | null = $state(null);
     let voiceChannel: VoiceChannelData | null = $state(null);
@@ -21,11 +21,12 @@
     let speakStartListenerCallback = () => {};
     let speakStopListenerCallback = () => {};
     let voiceStateUpdateListenerCallback = () => {};
+    let voiceStateCreateListenerCallback = () => {};
+    let voiceStateDeleteListenerCallback = () => {};
 
     onMount(async () => {
         appWindow.setIgnoreCursorEvents(true);
 
-        customCssLink = convertFileSrc("", "discoverlay-custom-css");
         ownId = await obtainOwnId();
 
         settings = await loadSettings();
@@ -53,6 +54,16 @@
         voiceStateUpdateListenerCallback = await listenForVoiceStateUpdate((state) => {
             voiceStates[state.id] = state;
         });
+
+        voiceStateCreateListenerCallback = await listenForVoiceStateCreate(async (state) => {
+            voiceStates[state.id] = state;
+            voiceChannel = await requestVoiceChannel();
+        });
+
+        voiceStateDeleteListenerCallback = await listenForVoiceStateDelete(async (userId) => {
+            delete voiceStates[userId];
+            voiceChannel = await requestVoiceChannel();
+        });
     });
 
     onDestroy(() => {
@@ -63,6 +74,8 @@
         speakStartListenerCallback();
         speakStopListenerCallback();
         voiceStateUpdateListenerCallback();
+        voiceStateCreateListenerCallback();
+        voiceStateDeleteListenerCallback();
     });
 
     function getRenderedUsers() {
@@ -110,9 +123,8 @@
 </script>
 
 <svelte:head>
-    {#if customCssLink !== null}
-        <link rel="stylesheet" href={customCssLink} />
-    {/if}
+    <link rel="stylesheet" href={convertFileSrc("global.css", "discoverlay-custom-css")} />
+    <link rel="stylesheet" href={convertFileSrc("message.css", "discoverlay-custom-css")} />
 </svelte:head>
 
 {#if voiceChannel !== null}
@@ -251,4 +263,4 @@
             }
         }
     }
-</style>
+</style> -->

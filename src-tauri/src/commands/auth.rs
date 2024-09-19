@@ -1,7 +1,7 @@
 use oauth2::{
     basic::BasicClient, AuthUrl, ClientId, ClientSecret, CsrfToken, RedirectUrl, Scope, TokenUrl,
 };
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 
 const AUTH_URL: &str = "https://discord.com/api/oauth2/authorize?response_type=code";
 const TOKEN_URL: &str = "https://discord.com/api/oauth2/token";
@@ -43,9 +43,9 @@ pub async fn start_discord_auth(app: AppHandle, client_id: String, client_secret
             .add_scope(Scope::new("rpc.voice.read".to_string()))
             .url();
 
-        app.emit_all("auth-url", auth_url.as_ref()).unwrap();
+        app.emit("auth-url", auth_url.as_ref()).unwrap();
         if let Err(e) = webbrowser::open(auth_url.as_ref()) {
-            app.emit_all("failed-open-browser", e.to_string()).unwrap();
+            app.emit("failed-open-browser", e.to_string()).unwrap();
         }
     });
 }

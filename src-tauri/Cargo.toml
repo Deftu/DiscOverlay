@@ -11,23 +11,28 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.4", features = [] }
+tauri-build = { version = "2.0.0-rc", features = [] }
 
 [dependencies]
-tokio = { version = "1.29.1", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.29.1", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["preserve_order"] }
 
-tauri = { version = "1.7.2", features = [ "window-set-ignore-cursor-events", "shell-open", "window-start-dragging", "window-close", "window-show", "window-minimize", "window-hide", "window-unminimize", "devtools"] }
-tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri = { version = "2.0.0-rc", features = [ "unstable", "devtools", "macos-private-api"] }
+tauri-plugin-single-instance = "2.0.0-rc"
 
-rpc-discord = { git = "https://github.com/Deftu/discord-ipc-rust.git" }
+# discord-ipc-rust = { version = "0.1.4", git = "https://github.com/Deftu/discord-ipc-rust.git" }
+discord-ipc-rust = { path = "../../discord-ipc-rust" }
 oauth2 = "4.4.2"
 webbrowser = "1.0.1"
 axum = "0.7.5"
 axum-extra = "0.7.4"
 http = "1.1.0"
 open = "3.2.0"
+notify = "6.1.1"
+percent-encoding = "2.3.1"
+futures = "0.3.30"
+chrono = "0.4.31"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.

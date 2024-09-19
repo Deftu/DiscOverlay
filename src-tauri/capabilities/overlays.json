@@ -1,0 +1,16 @@
+{
+    "identifier": "overlays",
+    "description": "Permissions for overlay windows",
+    "local": true,
+    "windows": ["voice", "message"],
+    "permissions": [
+        "core:default",
+        "core:window:allow-minimize",
+        "core:window:allow-unminimize",
+        "core:window:allow-show",
+        "core:window:allow-hide",
+        "core:window:allow-close",
+        "core:window:allow-start-dragging",
+        "core:window:allow-set-ignore-cursor-events"
+    ]
+}

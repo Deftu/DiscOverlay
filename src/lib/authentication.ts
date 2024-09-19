@@ -1,14 +1,16 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { get, writable } from "svelte/store";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
-let setup = false;
+const setup = writable(false);
+export const authenticated = writable(false);
 
 export async function runSetup() {
-    if (setup) {
+    if (get(setup)) {
         return;
     }
 
-    setup = true;
+    setup.set(true);
     await invoke("setup_initial");
 }
 

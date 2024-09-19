@@ -1,7 +1,7 @@
 use std::fs::File;
 
 use serde::{Deserialize, Serialize};
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 
 #[derive(Default, Clone, Deserialize, Serialize)]
 pub struct DiscordConfig {
@@ -22,7 +22,9 @@ pub fn save_config(app: &AppHandle, config: &DiscordConfig) {
 }
 
 fn config_file(app: &AppHandle) -> File {
-    let path = tauri::api::path::app_config_dir(app.config().as_ref())
+    let path = app
+        .path()
+        .app_config_dir()
         .expect("Failed to get app config dir");
     if !path.exists() {
         std::fs::create_dir_all(&path).expect("Failed to create app config dir");

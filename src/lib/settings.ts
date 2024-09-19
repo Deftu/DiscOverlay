@@ -1,31 +1,38 @@
+import { get, writable } from "svelte/store";
 import { listen } from "@tauri-apps/api/event";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
+
+const listening = writable(false);
+
+export const settings = writable<Settings | null>(null);
 
 export type Settings = {
-    visibility: VisibilitySettings;
+    voice: VoiceSettings;
 };
 
-export type VisibilitySettings = {
-    show_voice_channel_name: boolean;
-    show_speaking_users_only: boolean;
-    show_own_user_first: boolean;
-    show_muted_users: boolean;
-    show_usernames: boolean;
+export type VoiceSettings = {
+    showVoiceChannelName: boolean;
+    showSpeakingUsersOnly: boolean;
+    showOwnUserFirst: boolean;
+    showMutedUsers: boolean;
+    showUsernames: boolean;
+};
+
+export type MessageSettings = {
+    channelId: string;
+    showTextChannelName: boolean;
 };
 
 export async function loadSettings() {
-    return (await invoke("load_settings")) as Settings;
+    if (!get(listening)) {
+        await listen<Settings>("settings-updated", async (event) => {
+            settings.set(event.payload);
+        });
+    }
+
+    settings.set((await invoke("load_settings")) as Settings);
 }
 
 export async function saveSettings(settings: Settings) {
     return await invoke("save_settings", { settings });
-}
-
-export async function listenForSettings(
-    callback: (settings: Settings) => void
-): Promise<() => void> {
-    return listen("settings-updated", async (settings) => {
-        const payload = settings.payload as Settings;
-        callback(payload);
-    });
 }

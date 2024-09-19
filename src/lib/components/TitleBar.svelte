@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { appWindow } from "@tauri-apps/api/window";
-    import { invoke } from "@tauri-apps/api/tauri";
+    import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+    import { invoke } from "@tauri-apps/api/core";
+const appWindow = getCurrentWebviewWindow()
 
     async function minimize() {
         await appWindow.minimize();
@@ -30,7 +31,10 @@
 
 <style lang="scss">
     .dfg-titlebar {
-        background: var(--dfg-background-2, #212125);
+        background: var(--dfg-background-2);
+
+        position: sticky;
+        top: 0;
 
         display: flex;
         width: 100%;

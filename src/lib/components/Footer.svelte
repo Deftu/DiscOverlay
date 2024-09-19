@@ -11,6 +11,9 @@
         color: var(--dfg-text-faded);
         background-color: var(--dfg-background-2);
 
+        position: sticky;
+        bottom: 0;
+
         display: flex;
         width: 100%;
         padding: 10px 25px;

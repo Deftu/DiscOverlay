@@ -1,8 +1,11 @@
-use rpc_discord::{
-    models::{commands::CommandReturn, events::EventReturn},
-    DiscordIpcClient, EventReceive,
+use discord_ipc_rust::{
+    models::receive::{
+        commands::ReturnedCommand,
+        events::{ReturnedEvent, VoiceConnectionState},
+    },
+    DiscordIpcClient, ReceivedItem,
 };
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 use tokio::sync::Mutex;
 
 use crate::commands::auth::IpcState;
@@ -10,6 +13,7 @@ use crate::commands::auth::IpcState;
 use super::http::UserToken;
 
 #[derive(Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
 struct VoiceResponseUser {
     id: String,
     name: String,
@@ -18,6 +22,7 @@ struct VoiceResponseUser {
 }
 
 #[derive(Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
 struct VoiceResponse {
     id: String,
     channel_name: String,
@@ -25,6 +30,7 @@ struct VoiceResponse {
 }
 
 #[derive(Clone, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
 struct VoiceStateResponse {
     id: String,
     server_mute: bool,
@@ -46,15 +52,15 @@ pub fn setup_ipc(app: &AppHandle) {
         println!("Starting Discord IPC client");
 
         // Create our IPC client
-        let construction = DiscordIpcClient::setup(&client_id, &access_token)
+        let construction = DiscordIpcClient::create(&client_id, &access_token)
             .await
             .expect("Failed to connect to Discord IPC");
 
-        let mut client = construction.client;
+        let mut client = construction.0;
 
         let app_handle = app.clone();
         client
-            .handler(move |event| {
+            .setup_event_handler(move |event| {
                 ipc_message_handler(&app_handle, event);
             })
             .await;
@@ -70,16 +76,16 @@ pub fn setup_ipc(app: &AppHandle) {
         app.manage(Mutex::new(client));
 
         println!("Passing self user to app");
-        app.manage(construction.self_user);
+        app.manage(construction.1);
 
         println!("Emitting authenticated event");
-        app.emit_all("authenticated", ()).unwrap();
+        app.emit("authenticated", ()).unwrap();
     });
 }
 
-fn ipc_message_handler(app: &AppHandle, event: EventReceive) {
-    if let EventReceive::Command(CommandReturn::GetSelectedVoiceChannel { data }) = event {
-        app.emit_all(
+fn ipc_message_handler(app: &AppHandle, event: ReceivedItem) {
+    if let ReceivedItem::Command(ReturnedCommand::GetSelectedVoiceChannel(data)) = event {
+        app.emit(
             "voice-channel",
             if let Some(data) = data {
                 Some(VoiceResponse {
@@ -111,20 +117,26 @@ fn ipc_message_handler(app: &AppHandle, event: EventReceive) {
             },
         )
         .unwrap();
-    } else if let EventReceive::Event(event_type) = event {
+    } else if let ReceivedItem::Event(event_type) = event {
         match event_type.as_ref() {
-            EventReturn::SpeakingStart { data } => {
-                app.emit_all("speaking-start", data.user_id.clone())
-                    .unwrap();
+            ReturnedEvent::VoiceConnectionStatus(data) => {
+                // If the user disconnected, send an event to the frontend
+                if let VoiceConnectionState::Disconnected = data.state {
+                    app.emit("voice-connection-disconnected", ()).unwrap();
+                }
             }
 
-            EventReturn::SpeakingStop { data } => {
-                app.emit_all("speaking-stop", data.user_id.clone()).unwrap();
+            ReturnedEvent::SpeakingStart(data) => {
+                app.emit("speaking-start", data.user_id.clone()).unwrap();
             }
 
-            EventReturn::VoiceStateUpdate { data } => {
-                app.emit_all(
-                    "voice-state",
+            ReturnedEvent::SpeakingStop(data) => {
+                app.emit("speaking-stop", data.user_id.clone()).unwrap();
+            }
+
+            ReturnedEvent::VoiceStateCreate(data) => {
+                app.emit(
+                    "voice-state-create",
                     VoiceStateResponse {
                         id: data.user.as_ref().unwrap().id.clone(),
                         server_mute: data.state.mute,
@@ -134,6 +146,25 @@ fn ipc_message_handler(app: &AppHandle, event: EventReceive) {
                     },
                 )
                 .unwrap();
+            }
+
+            ReturnedEvent::VoiceStateUpdate(data) => {
+                app.emit(
+                    "voice-state-update",
+                    VoiceStateResponse {
+                        id: data.user.as_ref().unwrap().id.clone(),
+                        server_mute: data.state.mute,
+                        server_deaf: data.state.deaf,
+                        self_mute: data.state.self_mute,
+                        self_deaf: data.state.self_deaf,
+                    },
+                )
+                .unwrap();
+            }
+
+            ReturnedEvent::VoiceStateDelete(data) => {
+                app.emit("voice-state-delete", data.user.as_ref().unwrap().id.clone())
+                    .unwrap();
             }
 
             _ => {}
