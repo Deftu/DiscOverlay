@@ -40,6 +40,9 @@ jobs:
 
             - name: Install PNPM
               uses: pnpm/action-setup@v2
+              with:
+                  version: 9
+                  run_install: false
 
             - name: Setup node
               uses: actions/setup-node@v4
