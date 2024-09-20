@@ -955,6 +955,7 @@ dependencies = [
 [[package]]
 name = "discord-ipc-rust"
 version = "0.1.4"
+source = "git+https://github.com/Deftu/discord-ipc-rust.git#7235c5abced620b86cbafd99af9ed73fafa21447"
 dependencies = [
  "chrono",
  "dotenv",
