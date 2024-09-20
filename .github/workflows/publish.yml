@@ -26,24 +26,28 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: lts/*
-
-            - name: install Rust stable
+            - name: Install Rust stable
               uses: dtolnay/rust-toolchain@stable
               with:
                   # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
                   targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-            - name: install dependencies (ubuntu only)
+            - name: Install dependencies (Ubuntu only)
               if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
               run: |
                   sudo apt-get update
                   sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-            - name: install frontend dependencies
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: pnpm
+
+            - name: Install PNPM
+              uses: pnpm/action-setup@v2
+
+            - name: Install frontend dependencies
               run: pnpm install
 
             - uses: tauri-apps/tauri-action@v0
