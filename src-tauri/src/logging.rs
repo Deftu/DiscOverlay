@@ -45,7 +45,7 @@ fn create_file_appender(app: &Option<&AppHandle>) -> RollingFileAppender {
 
     let trigger = SizeTrigger::new(TRIGGER_FILE_SIZE);
     let roller = FixedWindowRoller::builder()
-        .build(archive_pattern.as_str(), 1)
+        .build(archive_pattern.as_str(), 5)
         .unwrap();
     let policy = CompoundPolicy::new(Box::new(trigger), Box::new(roller));
 
