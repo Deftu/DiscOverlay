@@ -8,7 +8,7 @@
     import { convertFileSrc } from "@tauri-apps/api/core";
     import { onDestroy, onMount } from "svelte";
 
-    const appWindow = getCurrentWebviewWindow()
+    const appWindow = getCurrentWebviewWindow();
 
     let ownId: string | null = $state(null);
     let oldChannelId: string | null = null;
@@ -46,14 +46,11 @@
     });
 
     let customCssListenerCallback = () => {};
-    let settingsListenerCallback = () => {};
     let voiceListenerCallback = () => {};
     let disconnectListenerCallback = () => {};
     let speakingStateListenerCallback = () => {};
 
     onMount(async () => {
-        // await appWindow.setIgnoreCursorEvents(true);
-
         loadSettings();
 
         obtainOwnId().then((id) => {
@@ -64,10 +61,7 @@
     });
 
     onDestroy(() => {
-        // appWindow.setIgnoreCursorEvents(false);
-
         customCssListenerCallback();
-        settingsListenerCallback();
         voiceListenerCallback();
         disconnectListenerCallback();
         speakingStateListenerCallback();
