@@ -21,8 +21,7 @@ serde_json = { version = "1.0", features = ["preserve_order"] }
 tauri = { version = "2.0.0-rc", features = [ "unstable", "devtools", "macos-private-api"] }
 tauri-plugin-single-instance = "2.0.0-rc"
 
-# discord-ipc-rust = { version = "0.1.4", git = "https://github.com/Deftu/discord-ipc-rust.git" }
-discord-ipc-rust = { path = "../../discord-ipc-rust" }
+discord-ipc-rust = { git = "https://github.com/Deftu/discord-ipc-rust.git" }
 oauth2 = "4.4.2"
 webbrowser = "1.0.1"
 axum = "0.7.5"
