@@ -34,7 +34,7 @@ pub async fn handle_uri_scheme_protocol(
     // If there are no overlay at the ID (requested path), return a 404.
     let overlay = OverlayStorage::get_overlay_by_id(app, id).await;
     if overlay.is_none() {
-        println!(
+        log::warn!(
             "Requested custom CSS @ {}, but that's not a valid overlay",
             id
         );
@@ -76,7 +76,7 @@ pub fn setup_path_watcher(app: &AppHandle) {
                     }
                 }
                 Err(e) => {
-                    eprintln!("watch error: {:?}", e);
+                    log::error!("watch error: {:?}", e);
                 }
             }
         }

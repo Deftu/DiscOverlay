@@ -49,7 +49,7 @@ pub fn setup_ipc(app: &AppHandle) {
 
     let app = app.clone();
     tokio::spawn(async move {
-        println!("Starting Discord IPC client");
+        log::info!("Starting Discord IPC client");
 
         // Create our IPC client
         let construction = DiscordIpcClient::create(&client_id, &access_token)
@@ -72,13 +72,13 @@ pub fn setup_ipc(app: &AppHandle) {
         };
         crate::discord::config::save_config(&app, &settings);
 
-        println!("Passing Discord IPC client to app");
+        log::info!("Passing Discord IPC client to app");
         app.manage(Mutex::new(client));
 
-        println!("Passing self user to app");
+        log::info!("Passing self user to app");
         app.manage(construction.1);
 
-        println!("Emitting authenticated event");
+        log::info!("Emitting authenticated event");
         app.emit("authenticated", ()).unwrap();
     });
 }

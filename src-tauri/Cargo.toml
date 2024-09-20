@@ -34,6 +34,9 @@ percent-encoding = "2.3.1"
 futures = "0.3.30"
 chrono = "0.4.31"
 
+log = "0.4.22"
+log4rs = { version = "1.2.0", features = ["gzip", "pattern_encoder", "console_appender", "rolling_file_appender"] }
+
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
 # If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.

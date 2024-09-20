@@ -1,3 +1,5 @@
+use std::net::SocketAddr;
+
 use axum::{
     extract::{Query, State},
     response::IntoResponse,
@@ -23,18 +25,25 @@ pub struct UserToken(pub String);
 
 pub fn handle_setup(app: AppHandle) {
     tokio::spawn(async move {
-        let app = AppState { app };
+        let app_state = app.clone();
+        let app_state = AppState { app: app_state };
 
-        println!("Creating OAuth HTTP server");
+        if app.try_state::<SocketAddr>().is_some() {
+            return;
+        }
+
+        log::info!("Creating OAuth HTTP server");
 
         let server = Router::new()
             .route("/redirect", get(redirect))
-            .with_state(app)
+            .with_state(app_state)
             .into_make_service();
 
         let listener = tokio::net::TcpListener::bind("127.0.0.1:3053")
             .await
             .unwrap();
+
+        app.manage(listener.local_addr().unwrap());
 
         axum::serve(listener, server).await.unwrap();
     });
@@ -44,8 +53,6 @@ async fn redirect(
     Query(query): Query<RedirectQuery>,
     State(app): State<AppState>,
 ) -> impl IntoResponse {
-    println!("Redirected with code: {}", query.code);
-
     let app = app.app;
     let ipc_state = app.state::<IpcState>();
     let client = ipc_state.oauth_client.clone();
@@ -64,7 +71,7 @@ async fn redirect(
         }
 
         Err(err) => {
-            eprintln!("Error exchanging code: {:?}", err);
+            log::error!("Error exchanging code: {:?}", err);
             "Authentication failed".to_string()
         }
     }

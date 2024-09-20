@@ -2,41 +2,39 @@ import { get, writable } from "svelte/store";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
-const setup = writable(false);
-export const authenticated = writable(false);
+const listeningForAuth = writable(false);
 
-export async function runSetup() {
+export const setup = writable(false);
+export const authenticated = writable(false);
+export const authUrl = writable<string | null>(null);
+export const failedToOpenBrowser = writable(false);
+
+export function runSetup() {
     if (get(setup)) {
         return;
     }
 
-    setup.set(true);
-    await invoke("setup_initial");
+    invoke("setup_initial").then(() => {
+        setup.set(true);
+    });
 }
 
 export async function startAuth(clientId: string, clientSecret: string) {
+    if (!get(listeningForAuth)) {
+        listeningForAuth.set(true);
+
+        await listen("authenticated", () => {
+            authenticated.set(true);
+        });
+
+        await listen<string>("auth-url", (data) => {
+            authUrl.set(data.payload);
+        });
+
+        await listen("failed-open-browser", () => {
+            failedToOpenBrowser.set(true);
+        });
+    }
+
     await invoke("start_discord_auth", { clientId, clientSecret });
-}
-
-export async function listenForAuth(
-    callback: (authState: boolean) => void
-): Promise<() => void> {
-    return listen("authenticated", () => {
-        callback(true);
-    });
-}
-
-export async function listenForAuthUrl(
-    callback: (url: string) => void
-): Promise<() => void> {
-    return listen("auth-url", (data) => {
-        const payload = data.payload as string;
-        callback(payload);
-    });
-}
-
-export async function listenForFailedOpenBrowser(callback: () => void) {
-    return listen("failed-open-browser", () => {
-        callback();
-    });
 }

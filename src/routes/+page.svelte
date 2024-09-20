@@ -13,7 +13,7 @@
     let clientId: string = $state("");
     let clientSecret: string = $state("");
 
-    onMount(async () => {
+    onMount(() => {
         loadSettings();
 
         loadDiscordConfig().then((config) => {
