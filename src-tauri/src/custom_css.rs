@@ -53,6 +53,7 @@ pub async fn handle_uri_scheme_protocol(
 }
 
 pub fn setup_path_watcher(app: &AppHandle) {
+    log::info!("Setting up custom CSS path watcher");
     let (watcher, mut rx) = create_async_watcher().expect("Failed to create watcher");
 
     let app_handle = app.clone();

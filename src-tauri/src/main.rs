@@ -20,6 +20,8 @@ struct SingleInstancePayload {
 async fn main() {
     let logging_handle = logging::setup();
 
+    log::info!("Starting DiscOverlay v{}", get_app_version());
+
     let builder = tauri::Builder::default()
         .setup(|app| {
             logging::setup_with_app(logging_handle, app.handle());
@@ -65,6 +67,7 @@ async fn main() {
             // If this is the "main" window and the close event is triggered, exit the app
             if let tauri::WindowEvent::CloseRequested { .. } = event {
                 if window.label() == "main" {
+                    log::info!("Main window close requested... Goodbye! 😉");
                     window.app_handle().exit(0);
                 }
             }

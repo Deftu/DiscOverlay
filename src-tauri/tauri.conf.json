@@ -40,7 +40,7 @@
             }
         }
     },
-    "productName": "discoverlay",
+    "productName": "DiscOverlay",
     "version": "0.1.0",
     "identifier": "dev.deftu.discoverlay",
     "plugins": {},
