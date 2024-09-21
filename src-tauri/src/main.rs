@@ -28,6 +28,7 @@ async fn main() {
             custom_css::setup_path_watcher(app.handle());
             Ok(())
         })
+        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
             app.emit("single-instance", SingleInstancePayload { args: argv, cwd })
                 .unwrap();

@@ -42,6 +42,8 @@ const appWindow = getCurrentWebviewWindow()
         justify-content: space-between;
         align-items: center;
 
+        user-select: none;
+
         .dfg-titlebar-buttons {
             display: flex;
             padding: 10px;

@@ -43,7 +43,7 @@
 
 <style lang="scss">
     .container {
-        height: 100%;
+        min-height: 100%;
         display: flex;
         padding: 20px 250px;
         flex-direction: column;

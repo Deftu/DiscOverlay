@@ -5,7 +5,7 @@ body,
     background-color: var(--dfg-background-1);
 
     margin: 0;
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     scroll-behavior: smooth;
     scrollbar-width: none;
