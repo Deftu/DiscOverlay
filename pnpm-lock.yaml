@@ -17,6 +17,9 @@ importers:
       '@tauri-apps/plugin-shell':
         specifier: 2.0.0-rc.1
         version: 2.0.0-rc.1
+      '@tauri-apps/plugin-updater':
+        specifier: 2.0.0-rc.2
+        version: 2.0.0-rc.2
     devDependencies:
       '@fontsource/fira-mono':
         specifier: ^5.0.0
@@ -406,6 +409,9 @@ packages:
 
   '@tauri-apps/plugin-shell@2.0.0-rc.1':
     resolution: {integrity: sha512-JtNROc0rqEwN/g93ig5pK4cl1vUo2yn+osCpY9de64cy/d9hRzof7AuYOgvt/Xcd5VPQmlgo2AGvUh5sQRSR1A==}
+
+  '@tauri-apps/plugin-updater@2.0.0-rc.2':
+    resolution: {integrity: sha512-Ngvpa/km/00KASvOsFqRQbVf/6BaAX/gYwQs9eFxjygDpxxlZkZDVP1Fg0urW8s5dY7ELD6UAFB/ZI/g8D0QvQ==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -1155,6 +1161,10 @@ snapshots:
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-rc.0
 
   '@tauri-apps/plugin-shell@2.0.0-rc.1':
+    dependencies:
+      '@tauri-apps/api': 2.0.0-rc.5
+
+  '@tauri-apps/plugin-updater@2.0.0-rc.2':
     dependencies:
       '@tauri-apps/api': 2.0.0-rc.5
 
