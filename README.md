@@ -1,5 +1,9 @@
 # DiscOverlay
 
+DiscOverlay is an app that provides native overlay windows displaying Discord info. It shows information like who is currently in the user's connected voice channel and the voice states of those users. A message overlay feature, similar to Discord's StreamKit, is also being developed to enhance its capabilities.
+
+There are several options for customization, such as changing which users are displayed, what information about them is shown and what other channel information is displayed. There is also a custom CSS option for those who want to further customize the appearance of the overlay.
+
 [![wakatime](https://wakatime.com/badge/user/25be8ed5-7461-4fcf-93f7-0d88a7692cca/project/10d4eb9c-9912-4f2e-b38e-d507e6618a1f.svg)](https://wakatime.com/badge/user/25be8ed5-7461-4fcf-93f7-0d88a7692cca/project/10d4eb9c-9912-4f2e-b38e-d507e6618a1f)
 
 ---
