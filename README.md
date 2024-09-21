@@ -17,21 +17,27 @@ There are several options for customization, such as changing which users are di
 
 ### Creating your Discord developer application
 
-DiscOverlay uses Discord's RPC API to interact with your client for all of the information it needs to display. Unfortunately, as of now, Discord does not allow for global applications to use the RPC API, so you will need to create a new personal application on the Discord Developer Portal.
+Navigate to the Discord developer portal create a new developer application
 
-![New Application screenshot](./.github/new_application.png)
+![New Application](./static/new-application.png)
 
-### Getting your client ID
+Create an application. This can be named whatever you like and can be within whatever team you would like. If you don’t know what the teams mean, just leave it on “Personal”
 
-Discord uses this for determining which application to interact with. You can find this on the general information page of your application.
+![Create Application](./static/create-application.png)
 
-![Client ID screenshot](./.github/copy_client_id.png)
+### Setting up your client
 
-### Setting your redirect URI
+Once you’re taken to your new developer app’s page, navigate to the “OAuth2” tab
 
-The app redirects you to this URI after you authorize it. You can set this in the OAuth2 tab of your application.
+![Navigate to OAuth2 Tab](./static/navigate-oauth2.png)
 
-![Redirect URI screenshot](./.github/redirect_url.png)
+Copy your Client ID and (reset and) Client Secret, then input both into the fields below
+
+![Copy Client ID and Secret](./static/copy-client-id-and-secret.png)
+
+Finally, click “Add Redirect” and input http://localhost:3053/redirect into the redirect input, then save your changes
+
+![Add Redirect](./static/add-oauth2-redirect.png)
 
 ---
 
