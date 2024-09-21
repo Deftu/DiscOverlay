@@ -113,13 +113,13 @@
 
         <button class="dfg-button" onclick={minimize}>
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0.375H10V1.625H0V0.375Z" fill="#FDFBF9"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0.375H10V1.625H0V0.375Z" fill="currentColor" />
             </svg>
         </button>
         <button class="dfg-button" onclick={close}>
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.18798 10L8.76226e-05 0.812103L0.812191 0L10.0001 9.1879L9.18798 10Z" fill="#FDFBF9"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.812104 10L10 0.812103L9.1879 0L0 9.1879L0.812104 10Z" fill="#FDFBF9"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.18798 10L8.76226e-05 0.812103L0.812191 0L10.0001 9.1879L9.18798 10Z" fill="currentColor" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.812104 10L10 0.812103L9.1879 0L0 9.1879L0.812104 10Z" fill="currentColor" />
               </svg>
         </button>
     </div>
@@ -156,6 +156,10 @@
                 align-items: flex-start;
                 gap: 10px;
                 align-self: stretch;
+            }
+
+            svg {
+                color: var(--dfg-text);
             }
         }
     }
