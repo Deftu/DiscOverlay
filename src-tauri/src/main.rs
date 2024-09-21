@@ -9,7 +9,6 @@ mod discord;
 mod logging;
 mod overlays;
 mod settings;
-mod updater;
 
 #[derive(Clone, serde::Serialize)]
 struct SingleInstancePayload {
@@ -26,7 +25,6 @@ async fn main() {
     let builder = tauri::Builder::default()
         .setup(|app| {
             logging::setup_with_app(logging_handle, app.handle());
-            updater::setup_updater(app.handle());
             custom_css::setup_path_watcher(app.handle());
             Ok(())
         })
