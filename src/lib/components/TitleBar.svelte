@@ -3,7 +3,7 @@
     import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
     import { getVersion } from "@tauri-apps/api/app";
     import { invoke } from "@tauri-apps/api/core";
-    import { onMount } from "svelte";
+    import { onMount, untrack } from "svelte";
     import type { Update } from "@tauri-apps/plugin-updater";
     import { writable } from "svelte/store";
 
@@ -11,10 +11,19 @@
 
     let version: string | null = $state(null);
 
+    let updateNotFound = writable(false);
     let checkingForUpdates = $state(false);
     let pendingUpdate: Update | null = $state(null);
     const updateProgress = writable(-1);
     let downloadedUpdate = $state(false);
+
+    updateNotFound.subscribe((newValue) => {
+        if (newValue) {
+            setTimeout(() => {
+                updateNotFound.set(false);
+            }, 3000);
+        }
+    });
 
     onMount(() => {
         getVersion().then((v) => {
@@ -35,6 +44,8 @@
             return;
         }
 
+        $updateNotFound = false;
+
         if (downloadedUpdate && pendingUpdate) {
             await pendingUpdate.install();
 
@@ -52,6 +63,10 @@
         checkingForUpdates = true;
         pendingUpdate = await checkForUpdates();
         checkingForUpdates = false;
+
+        if (!pendingUpdate) {
+            $updateNotFound = true;
+        }
     }
 </script>
 
@@ -64,10 +79,12 @@
         <div class="updater">
             <button class="dfg-button" onclick={onUpdateButtonClicked}>
                 {#if !pendingUpdate}
-                    {#if !checkingForUpdates}
-                        Check for Updates
-                    {:else}
+                    {#if $updateNotFound}
+                        No updates found
+                    {:else if checkingForUpdates}
                         Checking...
+                    {:else}
+                        Check for updates
                     {/if}
                 {:else}
                     {#if !downloadedUpdate}
