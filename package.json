@@ -22,6 +22,7 @@
     },
     "type": "module",
     "dependencies": {
+        "@discordapp/twemoji": "^15.1.0",
         "@tauri-apps/api": "2.0.0-rc.0",
         "@tauri-apps/cli": "2.0.0-rc.0",
         "@tauri-apps/plugin-shell": "2.0.0-rc.1",
