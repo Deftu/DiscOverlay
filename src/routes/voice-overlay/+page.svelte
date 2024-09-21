@@ -165,6 +165,7 @@
 
 <style lang="scss">
     :global(html, body, .svelte-body, main) {
+        height: 100%;
         background: transparent !important;
         pointer-events: none;
         cursor: default;
