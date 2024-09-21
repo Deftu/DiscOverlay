@@ -1,7 +1,18 @@
 <script lang="ts">
     import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+    import { getVersion } from "@tauri-apps/api/app";
     import { invoke } from "@tauri-apps/api/core";
-const appWindow = getCurrentWebviewWindow()
+    import { onMount } from "svelte";
+
+    const appWindow = getCurrentWebviewWindow();
+
+    let version: string | null = $state(null);
+
+    onMount(() => {
+        getVersion().then((v) => {
+            version = v;
+        });
+    });
 
     async function minimize() {
         await appWindow.minimize();
@@ -13,7 +24,10 @@ const appWindow = getCurrentWebviewWindow()
 </script>
 
 <nav class="dfg-titlebar" data-tauri-drag-region>
-    <h2 class="dfg-header-2">DiscOverlay</h2>
+    <h2 class="dfg-header-2">
+        DiscOverlay {#if version}v{version}{/if}
+    </h2>
+
     <div class="dfg-titlebar-buttons">
         <button class="dfg-button" onclick={minimize}>
             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" viewBox="0 0 10 2" fill="none">
