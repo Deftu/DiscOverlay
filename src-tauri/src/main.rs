@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{AppHandle, Manager};
 
 mod commands;
 mod custom_css;
@@ -9,12 +9,6 @@ mod discord;
 mod logging;
 mod overlays;
 mod settings;
-
-#[derive(Clone, serde::Serialize)]
-struct SingleInstancePayload {
-    args: Vec<String>,
-    cwd: String,
-}
 
 #[tokio::main]
 async fn main() {
@@ -30,9 +24,12 @@ async fn main() {
         })
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-            app.emit("single-instance", SingleInstancePayload { args: argv, cwd })
-                .unwrap();
+        .plugin(tauri_plugin_single_instance::init(|app, _, _| {
+            app.webview_windows()
+                .get("main")
+                .expect("Failed to get main window")
+                .set_focus()
+                .expect("Failed to focus main window");
         }));
 
     builder
