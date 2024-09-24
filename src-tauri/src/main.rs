@@ -52,15 +52,14 @@ async fn main() {
             commands::settings::save_settings,
             discord::config::load_config
         ])
-        .register_uri_scheme_protocol("custom-css", |app, request| {
-            // Clone the app handle to use inside the async block
-            let app_handle = app.clone();
-            let request_clone = request.uri().to_string();
+        .register_asynchronous_uri_scheme_protocol("custom-css", |app, request, responder| {
+            let app = app.clone();
 
-            // Spawn an asynchronous task to handle the protocol
-            futures::executor::block_on(async {
-                custom_css::handle_uri_scheme_protocol(&app_handle, request_clone).await
-            })
+            tokio::spawn(async move {
+                let response =
+                    custom_css::handle_uri_scheme_protocol(&app, request.uri().to_string()).await;
+                responder.respond(response);
+            });
         })
         .on_window_event(|window, event| {
             // If this is the "main" window and the close event is triggered, exit the app
