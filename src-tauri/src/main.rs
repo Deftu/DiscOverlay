@@ -52,8 +52,8 @@ async fn main() {
             commands::settings::save_settings,
             discord::config::load_config
         ])
-        .register_asynchronous_uri_scheme_protocol("custom-css", |app, request, responder| {
-            let app = app.clone();
+        .register_asynchronous_uri_scheme_protocol("custom-css", |ctx, request, responder| {
+            let app = ctx.app_handle().clone();
 
             tokio::spawn(async move {
                 let response =

@@ -11,7 +11,7 @@ rust-version = "1.60"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-rc", features = [] }
+tauri-build = { version = "2.0.1", features = [] }
 
 [dependencies]
 log = "0.4.22"
@@ -24,9 +24,9 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0", features = ["preserve_order"] }
 chrono = "0.4.31"
 
-tauri = { version = "2.0.0-rc", features = [ "unstable", "devtools", "macos-private-api"] }
-tauri-plugin-shell = "2.0.0-rc.3"
-tauri-plugin-single-instance = "2.0.0-rc"
+tauri = { version = "2.0.3", features = [ "unstable", "devtools", "macos-private-api"] }
+tauri-plugin-shell = "2.0.1"
+tauri-plugin-single-instance = "2.0.1"
 
 discord-ipc-rust = { git = "https://github.com/Deftu/discord-ipc-rust.git" }
 oauth2 = "4.4.2"
